@@ -3,7 +3,7 @@ FROM maven:3.9.4-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copy pom.xml and download dependencies first (better caching)
-COPY pom.xml .
+COPY pom.xml . 
 RUN mvn dependency:go-offline -B
 
 # Copy the rest of the source code and build
@@ -20,9 +20,8 @@ RUN rm -rf webapps/*
 # Copy WAR from build stage
 COPY --from=build /app/target/attendease_backend.war webapps/ROOT.war
 
-# Expose port 8080
+# Expose any port (Render uses $PORT automatically)
 EXPOSE 8080
 
-# Start Tomcat with dynamic port
-CMD ["sh", "-c", "catalina.sh run -Dserver.port=$PORT"]
-
+# Start Tomcat on Render's dynamic port
+CMD sh -c "sed -i 's/port=\"8080\"/port=\"'$PORT'\"/' conf/server.xml && catalina.sh run"
