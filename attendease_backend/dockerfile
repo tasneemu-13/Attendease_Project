@@ -24,4 +24,5 @@ COPY --from=build /app/target/attendease_backend.war webapps/ROOT.war
 EXPOSE 8080
 
 # Start Tomcat on Render's dynamic port
-CMD sh -c "sed -i 's/port=\"8080\"/port=\"'$PORT'\"/' conf/server.xml && catalina.sh run"
+CMD ["sh", "-c", "sed -i 's/port=\"8080\"/port=\"'$PORT'\"/' conf/server.xml && catalina.sh run"]
+
