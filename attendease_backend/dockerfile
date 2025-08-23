@@ -1,13 +1,26 @@
-# Use Tomcat 9 base image with JDK 17 (works well with WARs)
+# ---- Stage 1: Build the WAR ----
+FROM maven:3.9.4-eclipse-temurin-17 AS build
+WORKDIR /app
+
+# Copy pom.xml and download dependencies first (better caching)
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copy the rest of the source code and build
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# ---- Stage 2: Run with Tomcat ----
 FROM tomcat:9.0-jdk17
+WORKDIR /usr/local/tomcat
 
 # Remove default apps
-RUN rm -rf /usr/local/tomcat/webapps/*
+RUN rm -rf webapps/*
 
-# Copy your WAR to Tomcat webapps
-COPY target/attendease_backend.war /usr/local/tomcat/webapps/ROOT.war
+# Copy WAR from build stage
+COPY --from=build /app/target/attendease_backend.war webapps/ROOT.war
 
-# Expose port 8080 (Render will map automatically)
+# Expose port 8080
 EXPOSE 8080
 
 # Start Tomcat
