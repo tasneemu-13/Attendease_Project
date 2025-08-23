@@ -23,5 +23,6 @@ COPY --from=build /app/target/attendease_backend.war webapps/ROOT.war
 # Expose port 8080
 EXPOSE 8080
 
-# Start Tomcat
-CMD ["catalina.sh", "run"]
+# Start Tomcat with dynamic port
+CMD ["sh", "-c", "catalina.sh run -Dserver.port=$PORT"]
+
