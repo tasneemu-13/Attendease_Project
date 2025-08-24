@@ -1,15 +1,15 @@
-// src/components/SupportAnimation.js
 import React from 'react';
 
 const SupportAnimation = () => {
   return (
     <video
-      src="animation.mp4" // or use import if inside assets
+      src="animation.mp4"
       autoPlay
       loop
       muted
       playsInline
-      style={{ width: '700px', height: 'auto' }}
+      style={{ maxWidth: '100%', height: 'auto' }}
+      className="w-full md:w-auto md:max-w-[400px]"
     />
   );
 };
