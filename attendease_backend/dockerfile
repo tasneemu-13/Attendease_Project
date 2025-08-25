@@ -3,7 +3,7 @@ FROM maven:3.9.4-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copy pom.xml and download dependencies first (better caching)
-COPY pom.xml . 
+COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
 # Copy the rest of the source code and build
@@ -17,12 +17,15 @@ WORKDIR /usr/local/tomcat
 # Remove default apps
 RUN rm -rf webapps/*
 
+# Remove default server.xml and copy your custom one
+RUN rm -rf conf/server.xml
+COPY server.xml conf/
+
 # Copy WAR from build stage
 COPY --from=build /app/target/attendease_backend.war webapps/ROOT.war
 
 # Expose any port (Render uses $PORT automatically)
 EXPOSE 8080
 
-# Start Tomcat on Render's dynamic port
-CMD ["sh", "-c", "sed -i 's/port=\"8080\"/port=\"'$PORT'\"/' conf/server.xml && catalina.sh run"]
-
+# Start Tomcat normally (no need to sed patch if server.xml already has ${PORT})
+CMD ["catalina.sh", "run"]
