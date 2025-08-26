@@ -2,11 +2,11 @@
 FROM maven:3.9.4-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy pom.xml and download dependencies first (better caching)
+# Copy pom.xml and download dependencies first (for caching)
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
-# Copy the rest of the source code and build
+# Copy source and build WAR
 COPY src ./src
 RUN mvn clean package -DskipTests
 
@@ -17,18 +17,15 @@ WORKDIR /usr/local/tomcat
 # Remove default apps
 RUN rm -rf webapps/*
 
-# Remove default server.xml and copy your custom one
+# Remove default server.xml and copy custom one with placeholder
 RUN rm -rf conf/server.xml
-COPY tomcat/server.xml conf/
+COPY tomcat/server.xml conf/server.xml
 
 # Copy WAR from build stage
 COPY --from=build /app/target/attendease_backend.war webapps/ROOT.war
 
-# Render sets PORT in env — pass it to Tomcat as a system property
-ENV CATALINA_OPTS="-DPORT=${PORT}"
-
-# Expose Render’s default (it ignores this, but keeps Docker happy)
+# Expose (Render assigns a dynamic $PORT, we'll patch below)
 EXPOSE 8080
 
-# Start Tomcat
-CMD ["catalina.sh", "run"]
+# Replace ${PORT} in server.xml with actual $PORT at runtime, then run Tomcat
+CMD sed -i "s/\${PORT}/$PORT/" conf/server.xml && catalina.sh run
