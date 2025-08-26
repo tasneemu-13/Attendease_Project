@@ -7,8 +7,8 @@
     <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
 
     <Service name="Catalina">
-        <!-- Render will inject PORT at runtime -->
-        <Connector port="${PORT}" protocol="HTTP/1.1"
+        <!-- Will be replaced at runtime with Render's PORT -->
+        <Connector port="__PORT__" protocol="HTTP/1.1"
                    address="0.0.0.0"
                    connectionTimeout="20000"
                    redirectPort="8443"
