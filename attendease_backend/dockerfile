@@ -24,8 +24,11 @@ COPY tomcat/server.xml conf/
 # Copy WAR from build stage
 COPY --from=build /app/target/attendease_backend.war webapps/ROOT.war
 
-# Expose any port (Render uses $PORT automatically)
+# Render sets PORT in env — pass it to Tomcat as a system property
+ENV CATALINA_OPTS="-DPORT=${PORT}"
+
+# Expose Render’s default (it ignores this, but keeps Docker happy)
 EXPOSE 8080
 
-# Start Tomcat normally (Render will inject $PORT into server.xml)
+# Start Tomcat
 CMD ["catalina.sh", "run"]
