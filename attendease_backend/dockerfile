@@ -17,15 +17,15 @@ WORKDIR /usr/local/tomcat
 # Remove default apps
 RUN rm -rf webapps/*
 
-# Remove default server.xml and copy custom one with placeholder
-RUN rm -rf conf/server.xml
+# Copy our custom server.xml template
+RUN rm -f conf/server.xml
 COPY tomcat/server.xml conf/server.xml
 
 # Copy WAR from build stage
 COPY --from=build /app/target/attendease_backend.war webapps/ROOT.war
 
-# Expose (Render assigns a dynamic $PORT, we'll patch below)
+# Expose port (Render will override with $PORT anyway)
 EXPOSE 8080
 
-# Replace ${PORT} in server.xml with actual $PORT at runtime, then run Tomcat
-CMD sed -i "s/\${PORT}/$PORT/" conf/server.xml && catalina.sh run
+# At runtime, replace __PORT__ with actual $PORT from Render
+CMD sed -i "s/__PORT__/${PORT}/" conf/server.xml && catalina.sh run
