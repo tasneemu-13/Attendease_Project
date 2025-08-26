@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Server port="-1" shutdown="SHUTDOWN">
-
-    <!-- Listeners -->
     <Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
     <Listener className="org.apache.catalina.core.AprLifecycleListener"/>
     <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
     <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
     <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
 
-    <!-- Global resources -->
     <GlobalNamingResources>
         <Resource name="UserDatabase" auth="Container"
                   type="org.apache.catalina.UserDatabase"
@@ -17,8 +14,8 @@
                   pathname="conf/tomcat-users.xml"/>
     </GlobalNamingResources>
 
-    <!-- Service & Connector -->
     <Service name="Catalina">
+        <!-- IMPORTANT: Use system property substitution -->
         <Connector port="${PORT}" protocol="HTTP/1.1"
                    address="0.0.0.0"
                    connectionTimeout="20000"
@@ -41,4 +38,3 @@
         </Engine>
     </Service>
 </Server>
-
