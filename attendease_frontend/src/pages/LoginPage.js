@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginHeader from "../components/LoginHeader";
+import { AUTH_BASE_URL } from "../config"; // ✅ Import the base URL
+
 // The LoginPage component handles user authentication.
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -19,7 +21,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/attendease_backend/login", {
+      const response = await fetch(`${AUTH_BASE_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
