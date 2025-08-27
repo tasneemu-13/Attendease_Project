@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import LoginHeader from "../components/LoginHeader";
-
+import { AUTH_BASE_URL } from "../config";
 // This component presents a multi-step registration form with Google Sign-in option,
 // password confirmation, and a dynamic, responsive UI.
 export default function RegisterForm() {
@@ -77,19 +77,19 @@ export default function RegisterForm() {
     console.log("Attempting to register teacher...");
     try {
       // Using a relative path so the React proxy redirects to the backend.
-      const res = await fetch("http://localhost:8080/attendease_backend/register", {
-        method: "POST",
-        headers: {
+    const res = await fetch(`${AUTH_BASE_URL}/register`, {
+         method: "POST",
+         headers: {
           "Content-Type": "application/json",
-        },
+         },
         body: JSON.stringify({
-          email,
-          password,
-          role: "teacher",
-          tac: accessCode,
-          name: teacherName,
+        email,
+        password,
+        role: "teacher",
+        tac: accessCode,
+        name: teacherName,
         }),
-      });
+     });
       // Log the response status to help with debugging
       console.log("Server response status:", res.status);
 
@@ -113,7 +113,7 @@ export default function RegisterForm() {
     console.log("Attempting to register student...");
     try {
       // Using a relative path so the React proxy redirects to the backend.
-      const res = await fetch("http://localhost:8080/attendease_backend/register", {
+        const res = await fetch(`${AUTH_BASE_URL}/register` ,{
         method: "POST",
         headers: {
           "Content-Type": "application/json",
