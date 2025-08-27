@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API_BASE_URL from "../config";   // import config.js
+import { API_BASE_URL } from "../config";   // ✅ Correct
+ // import config.js
 
 export default function AddTeacherCourses() {
   const navigate = useNavigate();
