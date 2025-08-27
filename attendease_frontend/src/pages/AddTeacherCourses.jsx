@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config";   // import config.js
 
 export default function AddTeacherCourses() {
   const navigate = useNavigate();
@@ -15,9 +16,10 @@ export default function AddTeacherCourses() {
 
   // Define valid section names based on the course's year
   const classNameOptions = {
-    "2": ["3S", "4S"], // Example options for courses with year '2'
-    "3": ["5S", "6S"], // Example options for courses with year '3'
-    // Add more years and sections as needed
+    "1": ["C11", "P11"]
+    "2": ["3S", "4S"],
+    "3": ["5S", "6S"],
+    "4": ["7S", "8S"]
   };
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function AddTeacherCourses() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch("http://localhost:8080/attendease_backend/api/view-all-courses");
+        const res = await fetch(`${API_BASE_URL}/view-all-courses`);  // ⬅️ replaced
         const data = await res.json();
         setCourses(data);
       } catch (error) {
@@ -43,16 +45,14 @@ export default function AddTeacherCourses() {
     fetchCourses();
   }, []);
 
-  // New handler to update both selected course and its corresponding year
   const handleCourseChange = (e) => {
     const courseCode = e.target.value;
     setSelectedCourse(courseCode);
 
-    // Find the course object to get its year
     const courseObject = courses.find(course => course.course_code === courseCode);
     if (courseObject) {
-      setSelectedYear(String(courseObject.year)); // Ensure year is always a string
-      setClassName(""); // Reset class name when the course changes
+      setSelectedYear(String(courseObject.year));
+      setClassName("");
     } else {
       setSelectedYear("");
       setClassName("");
@@ -68,7 +68,6 @@ export default function AddTeacherCourses() {
       return;
     }
 
-    // New validation to ensure semester is not greater than 8
     const semesterRegex = /(\d+)\s*S/;
     const match = className.match(semesterRegex);
     if (match && parseInt(match[1]) > 8) {
@@ -79,7 +78,7 @@ export default function AddTeacherCourses() {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/attendease_backend/api/add-teacher-course", {
+      const response = await fetch(`${API_BASE_URL}/add-teacher-course`, {   // ⬅️ replaced
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,6 +107,7 @@ export default function AddTeacherCourses() {
   };
 
   return (
+  
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-pink-100">
       <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
         <h1 className="text-2xl font-bold text-blue-900 mb-6">Add Teaching Course</h1>
