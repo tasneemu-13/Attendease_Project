@@ -16,7 +16,7 @@ export default function AddTeacherCourses() {
 
   // Define valid section names based on the course's year
   const classNameOptions = {
-    "1": ["C11", "P11"]
+    "1": ["C11", "P11"],
     "2": ["3S", "4S"],
     "3": ["5S", "6S"],
     "4": ["7S", "8S"],
