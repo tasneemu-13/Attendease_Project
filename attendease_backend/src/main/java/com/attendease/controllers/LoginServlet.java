@@ -3,7 +3,6 @@ package com.attendease.controllers;
 import com.attendease.services.AuthService;
 import com.google.gson.Gson;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,20 +23,12 @@ public class LoginServlet extends HttpServlet {
         String password;
     }
 
-    // Handles the preflight OPTIONS request from the browser for CORS.
-    @Override
-    protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
+    
 
-    // Main logic for handling the POST login request.
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
+        res.setContentType("application/json"); // Always return JSON
         PrintWriter out = res.getWriter();
         Map<String, Object> responseMap = new HashMap<>();
 
@@ -63,7 +54,10 @@ public class LoginServlet extends HttpServlet {
             }
 
             // ✅ Get full user details including role, name, id
-            Map<String, Object> userDetails = authService.loginWithDetails(loginRequest.email, loginRequest.password);
+            Map<String, Object> userDetails = authService.loginWithDetails(
+                loginRequest.email,
+                loginRequest.password
+            );
 
             if (userDetails != null) {
                 responseMap.put("message", "Login Successful");
