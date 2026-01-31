@@ -29,15 +29,15 @@
 - CSS3  
 
 ### Backend
-- Node.js  
-- Express.js  
+- Java 
 
 ### Database
-- MongoDB / MySQL *(as applicable)*  
+- MySQL
 
 ### Tools
 - Git & GitHub  
-- VS Code  
+- VS Code
+- IntelliJ
 
 
 ## 🎯 Objective
