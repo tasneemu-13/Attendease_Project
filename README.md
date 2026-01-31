@@ -39,27 +39,12 @@
 - Git & GitHub  
 - VS Code  
 
----
 
-## 📂 Project Structure
-AttendEase_Project
-│
-├── frontEnd
-│ └── src
-│ └── Pages
-│ ├── Login.jsx
-│ ├── Register.jsx
-│ ├── AdminDashboard.jsx
-│ ├── RaiseComplaint.jsx
-│ └── MyComplaints.jsx
-│
-└── backEnd
-
-🎯 Objective
+## 🎯 Objective
 
 To provide a digital, efficient, and reliable solution for managing attendance and student-related activities in educational institutions.
 
-📌 Future Enhancements
+## 📌 Future Enhancements
 
 📱 Mobile-friendly version
 
@@ -69,6 +54,6 @@ To provide a digital, efficient, and reliable solution for managing attendance a
 
 🔔 Notification system
 
-📄 License
+## 📄 License
 
 This project is developed for academic purposes.
